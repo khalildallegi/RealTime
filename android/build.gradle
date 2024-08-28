@@ -1,0 +1,37 @@
+buildscript {
+    ext.kotlin_version = '1.6.10'
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        // Choose the appropriate version for your project
+        classpath 'com.android.tools.build:gradle:7.4.0'
+        // Remove the duplicate classpath entry
+        // classpath 'com.android.tools.build:gradle:7.0.0' 
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.3.15'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+// Customizing the build directory structure
+rootProject.buildDir = "../build"
+
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+    // Ensure that the :app project is evaluated before others if necessary
+    project.evaluationDependsOn(":app")
+}
+
+// Task to clean the build directory
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
